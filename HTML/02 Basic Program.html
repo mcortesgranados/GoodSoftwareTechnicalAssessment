@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Handler Instructions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        pre {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Handler Setup Guide</h1>
+    <h2>1️⃣ Initialize a Node.js Project</h2>
+    <p>Run the following commands to set up your Node.js project:</p>
+    <pre><code>mkdir typescript-file-handler
+cd typescript-file-handler
+npm init -y</code></pre>
+    
+    <h2>2️⃣ Install TypeScript and Dependencies</h2>
+    <p>Install TypeScript and Node.js types:</p>
+    <pre><code>npm install typescript @types/node --save-dev</code></pre>
+    <p>Then, generate a TypeScript configuration file:</p>
+    <pre><code>npx tsc --init</code></pre>
+    
+    <h2>3️⃣ Create <code>fileHandler.ts</code></h2>
+    <p>Save the following code into <code>fileHandler.ts</code>:</p>
+    <pre><code>import * as fs from 'fs';
+
+class FileHandler {
+  private filePath: string;
+
+  constructor(filePath: string) {
+    this.filePath = filePath;
+  }
+
+  writeFile(data: string): void {
+    fs.writeFileSync(this.filePath, data, 'utf8');
+    console.log(`File written successfully: ${this.filePath}`);
+  }
+
+  readFile(): string {
+    if (!fs.existsSync(this.filePath)) {
+      console.error('File does not exist.');
+      return '';
+    }
+    return fs.readFileSync(this.filePath, 'utf8');
+  }
+
+  updateFile(data: string): void {
+    if (!fs.existsSync(this.filePath)) {
+      console.error('File does not exist. Creating a new one.');
+      this.writeFile(data);
+    } else {
+      fs.appendFileSync(this.filePath, '\n' + data, 'utf8');
+      console.log(`File updated successfully: ${this.filePath}`);
+    }
+  }
+}
+
+const fileHandler = new FileHandler('example.txt');
+fileHandler.writeFile('Hello, World!');
+console.log('Read:', fileHandler.readFile());
+fileHandler.updateFile('Appending new data.');
+console.log('Updated Read:', fileHandler.readFile());</code></pre>
+    
+    <h2>4️⃣ Compile TypeScript to JavaScript</h2>
+    <p>Run:</p>
+    <pre><code>npx tsc fileHandler.ts</code></pre>
+    
+    <h2>5️⃣ Run the Script</h2>
+    <p>Execute the compiled JavaScript file:</p>
+    <pre><code>node fileHandler.js</code></pre>
+    
+    <h2>Expected Output</h2>
+    <pre><code>File written successfully: example.txt
+Read: Hello, World!
+File updated successfully: example.txt
+Updated Read: Hello, World!
+Appending new data.</code></pre>
+    
+    <h2>Check <code>example.txt</code> Content</h2>
+    <pre><code>Hello, World!
+Appending new data.</code></pre>
+</body>
+</html>
